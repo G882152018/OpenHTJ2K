@@ -113,5 +113,12 @@ add_executable(imgcmp)
 add_subdirectory(source/apps/imgcmp)
 target_include_directories(imgcmp PUBLIC source/apps/imgcmp/)
 
+find_package(OpenCV)
+add_executable(face_haar)
+add_subdirectory(source/apps/face_haar)
+target_link_libraries(face_haar PUBLIC open_htj2k ${OpenCV_LIBS})
+target_include_directories(open_htj2k PUBLIC ${OpenCV_INCLUDE_DIRS})
+#target_link_libraries(open_htj2k ${OpenCV_LIBS})
+
 ### conformance testing
 include(${CMAKE_SOURCE_DIR}/tests/decoder_conformance.cmake)
