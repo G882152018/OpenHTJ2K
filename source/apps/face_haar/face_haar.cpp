@@ -34,16 +34,29 @@ std::string get_fname_from_timestamp() {
   return s.str();
 }
 
+int32_t log2i32(int32_t x) {
+  if (x <= 0) {
+    printf("ERROR: cannot compute log2 of negative value.\n");
+    exit(EXIT_FAILURE);
+  }
+  int32_t y = 0;
+  while (x > 1) {
+    y++;
+    x >>= 1;
+  }
+  return y;
+}
+
 int main() {
   cv::Mat frame;
   cv::Mat output;
   cv::CascadeClassifier detector_face, detector_eye;
   // path to XML files might be different. Check your install of OpenCV.
   detector_face.load(
-      "/usr/local/Cellar/opencv/4.5.4_2/share/opencv4/haarcascades/"
+      "/usr/share/opencv/haarcascades/"
       "haarcascade_frontalface_alt.xml");
   detector_eye.load(
-      "/usr/local/Cellar/opencv/4.5.4_2/share/opencv4/haarcascades/"
+      "/usr/share/opencv/haarcascades/"
       "haarcascade_eye.xml");
   const int cap_width  = 640;
   const int cap_height = 480;
@@ -76,8 +89,8 @@ int main() {
 
   open_htj2k::cod_params cod;  // parameters related to COD marker
 
-  cod.blkwidth          = 64;
-  cod.blkheight         = 64;
+  cod.blkwidth          = log2i32(64) - 2;
+  cod.blkheight         = log2i32(64) - 2;
   cod.is_max_precincts  = true;
   cod.use_SOP           = false;
   cod.use_EPH           = false;

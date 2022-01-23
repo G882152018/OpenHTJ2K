@@ -43,12 +43,12 @@ int main(int argc, char *argv[]) {
   j2k_argset args(argc, argv);  // parsed command line
   std::vector<std::string> fnames = args.get_infile();
   for (const auto &fname : fnames) {
-    try {
-      std::filesystem::exists(fname);
-    } catch (std::exception &exc) {
+    FILE *fp = fopen(fname.c_str(), "rb");
+    if (fp == nullptr) {
       printf("ERROR: File %s is not found.\n", fname.c_str());
       return EXIT_FAILURE;
     }
+    fclose(fp);
   }
   open_htj2k::image img(fnames);  // input image
   element_siz_local image_origin = args.get_origin();
